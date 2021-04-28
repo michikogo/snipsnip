@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Table, Divider } from "antd";
+import { Table } from "antd";
 
 const TableComponent = () => {
   const columns = [
