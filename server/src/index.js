@@ -5,8 +5,7 @@ const cors = require("cors");
 const app = express();
 
 // Import Models
-const UrlModel = require("./Model/UrlModel");
-const { findOneAndRemove } = require("./Model/UrlModel");
+// const UrlModel = require("./Model/UrlModel");
 
 // Connect to mongoDB
 mongoose
@@ -23,27 +22,16 @@ mongoose
 
 // Middleware
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 // Routes
-// app.get("/", (req, res) => {
-//   const url = new UrlModel({
-//     fullURL: "https://www.google.com/",
-//     shortURL: "1234",
-//     click: 12,
-//   });
+app.get("/", (req, res) => {
+  res.send("hello");
 
-//   url
-//     .save()
-//     .then((url) => {
-//       res.send("[CREATE] " + url);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err.message);
-//     });
-// });
+  throw new Error("cannot connect");
+});
 
 // Listen to port
-app.listen("4001", () => {
+app.listen(3001, () => {
   console.log("Server listen to port 4001");
 });
