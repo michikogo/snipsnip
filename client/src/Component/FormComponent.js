@@ -10,7 +10,7 @@ const FormComponent = () => {
     const rand = 1 + Math.random() * (100 - 1);
     const shortURL = Math.floor(rand);
     const newData = { fullURL, shortURL };
-    console.log(newData);
+    // console.log(newData);
 
     formRef.current.resetFields();
     fetch("http://localhost:3001/insert", {
