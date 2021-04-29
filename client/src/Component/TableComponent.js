@@ -1,11 +1,11 @@
 import { Table } from "antd";
 import { useState } from "react";
 
-const TableComponent = ({ URLData }) => {
+const TableComponent = ({ URLData, handleRefresh }) => {
   // record passes the specific object
   const handleSpecificURL = (record) => {
     console.log(record);
-    const data = {
+    const updateData = {
       fullURL: record.fullURL,
       shortURL: record.shortURL,
       click: record.click,
@@ -15,8 +15,16 @@ const TableComponent = ({ URLData }) => {
     fetch(`http://localhost:3001/update/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify(updateData),
     });
+    // .then(() => {
+    //   console.log("Update Data");
+
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+    handleRefresh();
   };
 
   const columns = [
