@@ -32,8 +32,17 @@ urlControllerRouter.post("/insert", async (req, res) => {
     console.log(err);
   }
 });
+
 // Read
 urlControllerRouter.get("/read", async (req, res) => {
-  UrlModel.find();
+  UrlModel.find((err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result);
+      console.log(`[READ] ${result}`);
+    }
+  });
 });
+
 module.exports = urlControllerRouter;
