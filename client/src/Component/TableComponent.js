@@ -21,10 +21,10 @@ const TableComponent = ({ URLData }) => {
   return (
     <div>
       <Table
-        pagination={false}
         columns={columns}
-        rowKey={(URLData) => URLData.id}
         dataSource={URLData}
+        pagination={{ pageSize: 5 }}
+        // scroll={{ y: 240 }}
       />
     </div>
   );
