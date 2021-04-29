@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UrlModel = new mongoose.Schema({
+const UrlSchema = new mongoose.Schema({
   fullURL: {
     type: String,
     require: true,
@@ -15,5 +15,5 @@ const UrlModel = new mongoose.Schema({
   },
 });
 
-const urlSchema = mongoose.model("UrlCollection", UrlModel);
-module.exports = urlSchema;
+const urlModel = mongoose.model("UrlCollection", UrlSchema);
+module.exports = urlModel;
