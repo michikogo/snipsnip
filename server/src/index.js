@@ -4,8 +4,8 @@ const cors = require("cors");
 
 const app = express();
 
-// Import Models
-// const UrlModel = require("./Model/UrlModel");
+// Import Controller
+const urlController = require("./Controller/UrlController");
 
 // Connect to mongoDB
 mongoose
@@ -25,11 +25,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("hello");
-
-  throw new Error("cannot connect");
-});
+app.use(urlController);
 
 // Listen to port
 app.listen(3001, () => {
