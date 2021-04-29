@@ -49,13 +49,14 @@ urlControllerRouter.get("/read", async (req, res) => {
 // rerouting
 urlControllerRouter.post("/update/:id", async (req, res) => {
   const id = req.params.id;
-  res.send("Found ID: " + id);
+  const click = req.body.click;
 
-  UrlModel = findById(id, (err, updateURL) => {
+  UrlModel.findById(id, (err, updateURL) => {
     if (!updateURL) {
       console.log(`[UPDATE] ${err}`);
     } else {
-      updateURL.click = req.body.click++;
+      updateURL.click = click + 1;
+
       updateURL
         .save()
         .then((urlData) => {

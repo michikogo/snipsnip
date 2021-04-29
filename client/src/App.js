@@ -42,7 +42,7 @@ function App() {
       </Row>
       <Row>
         <Col span={24}>
-          <TableComponent URLData={URLData} />
+          <TableComponent URLData={URLData} handleRefresh={handleRefresh} />
         </Col>
       </Row>
     </div>
