@@ -1,11 +1,33 @@
+import { useState, useEffect } from "react";
 import "./App.css";
 import "antd/dist/antd.css";
-import { Row, Col, Input } from "antd";
+import { Row, Col } from "antd";
 
 import FormComponent from "./Component/FormComponent";
 import TableComponent from "./Component/TableComponent";
 
 function App() {
+  const [URLData, setURLData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/read")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setURLData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [refresh]);
+
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+    // console.log(refresh);
+  };
   return (
     <div className="main-container">
       <Row>
@@ -15,21 +37,12 @@ function App() {
       </Row>
       <Row className="main-form">
         <Col span={24}>
-          <FormComponent />
-          <Row style={{ padding: "15px 100px" }}>
-            <Col span={24}>
-              <Input
-                style={{ textAlign: "center" }}
-                placeholder="new url is placed here"
-                bordered={false}
-              />
-            </Col>
-          </Row>
+          <FormComponent handleRefresh={handleRefresh} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <TableComponent />
+          <TableComponent URLData={URLData} />
         </Col>
       </Row>
     </div>

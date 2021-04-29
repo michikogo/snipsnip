@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Form, Input, Button } from "antd";
 
-const FormComponent = () => {
+const FormComponent = ({ handleRefresh }) => {
   const [fullURL, setFullURL] = useState("");
   const [shortURL, setShortURL] = useState("");
   const [showNewURL, setShowNewURL] = useState(false);
@@ -29,6 +29,7 @@ const FormComponent = () => {
         console.log("Insert Data");
         setShowNewURL(true);
         setFinalURL(tempShortURL);
+        handleRefresh();
       })
       .catch((err) => {
         throw err;
