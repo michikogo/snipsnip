@@ -12,9 +12,9 @@ const FormComponent = ({ handleRefresh }) => {
     var tempShortURL;
     if (shortURL === "") {
       const rand = 1 + Math.random() * (100000 - 1000);
-      tempShortURL = `https://www.snipsnip.com/${Math.floor(rand)}`;
+      tempShortURL = `/${Math.floor(rand)}`;
     } else {
-      tempShortURL = `https://www.snipsnip.com/${shortURL}`;
+      tempShortURL = `/${shortURL}`;
     }
     const newData = { fullURL, shortURL: tempShortURL, click: 0 };
     console.log(newData);
@@ -91,7 +91,7 @@ const FormComponent = ({ handleRefresh }) => {
                 cursor: "pointer",
               }}
             >
-              {finalURL}
+              {`https://www.snipsnip.com${finalURL}`}
             </Col>
           </Row>
         </div>
