@@ -1,4 +1,5 @@
 const express = require("express");
+// const { update, findById } = require("../Model/UrlModel");
 const urlControllerRouter = express.Router();
 
 // Import Model
@@ -41,6 +42,28 @@ urlControllerRouter.get("/read", async (req, res) => {
     } else {
       res.json(result);
       console.log(`[READ] ${result}`);
+    }
+  });
+});
+
+// rerouting
+urlControllerRouter.post("/update/:id", async (req, res) => {
+  const id = req.params.id;
+  res.send("Found ID: " + id);
+
+  UrlModel = findById(id, (err, updateURL) => {
+    if (!updateURL) {
+      console.log(`[UPDATE] ${err}`);
+    } else {
+      updateURL.click = req.body.click++;
+      updateURL
+        .save()
+        .then((urlData) => {
+          console.log(`[UPDATE] ${urlData}`);
+        })
+        .catch((err) => {
+          console.log(`[UPDATE] ${err}`);
+        });
     }
   });
 });
