@@ -1,4 +1,5 @@
 const express = require("express");
+const { update } = require("../Model/UrlModel");
 // const { update, findById } = require("../Model/UrlModel");
 const urlControllerRouter = express.Router();
 
@@ -46,27 +47,46 @@ urlControllerRouter.get("/read", async (req, res) => {
   });
 });
 
-// rerouting
-urlControllerRouter.post("/update/:id", async (req, res) => {
+// reading specific update
+// urlControllerRouter.get("/update/:id", async (req, res) => {
+//   const id = req.params.id;
+//   UrlModel.findById(id, (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.json(result);
+//       console.log(`[READ] ${result}`);
+//     }
+//   });
+// });
+
+urlControllerRouter.post("/update/:id", (req, res) => {
   const id = req.params.id;
-  const click = req.body.click;
 
-  UrlModel.findById(id, (err, updateURL) => {
-    if (!updateURL) {
-      console.log(`[UPDATE] ${err}`);
-    } else {
-      updateURL.click = click + 1;
-
+  UrlModel.findById(id)
+    .then((updateURL) => {
+      updateURL.click = req.body.click;
       updateURL
         .save()
-        .then((urlData) => {
-          console.log(`[UPDATE] ${urlData}`);
+        .then(() => {
+          console.log(`[UPDATE] ${updateURL}`);
+          res.status(200).json({
+            message: updateURL,
+          });
         })
         .catch((err) => {
           console.log(`[UPDATE] ${err}`);
+          res.status(500).json({
+            message: err.message,
+          });
         });
-    }
-  });
+    })
+    .catch((err) => {
+      console.log(`[UPDATE] ${err}`);
+      res.status(200).json({
+        message: err.message,
+      });
+    });
 });
 
 module.exports = urlControllerRouter;

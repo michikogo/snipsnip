@@ -4,27 +4,38 @@ import { useState } from "react";
 const TableComponent = ({ URLData, handleRefresh }) => {
   // record passes the specific object
   const handleSpecificURL = (record) => {
-    console.log(record);
+    const handleClick = ++record.click;
+
     const updateData = {
       fullURL: record.fullURL,
       shortURL: record.shortURL,
-      click: record.click,
+      click: handleClick,
     };
+    console.log(updateData);
 
     const id = record._id;
     fetch(`http://localhost:3001/update/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updateData),
-    });
-    // .then(() => {
-    //   console.log("Update Data");
+    })
+      .then((res) => {
+        console.log(`Update`);
+        console.log(res.json());
+        handleRefresh();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
-    handleRefresh();
+    // fetch(`http://localhost:3001/update/${id}`)
+    //   .then((res) => {
+    //     console.log("Update");
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const columns = [
@@ -33,7 +44,8 @@ const TableComponent = ({ URLData, handleRefresh }) => {
       dataIndex: "shortURL",
       render: (text, record) => (
         <a
-          // href={text}
+          href={record.fullURL}
+          target="_blank"
           onClick={() => handleSpecificURL(record)}
         >{`https://www.snipsnip.com${text}`}</a>
       ),
