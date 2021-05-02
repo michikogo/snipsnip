@@ -1,5 +1,5 @@
-import { Table } from "antd";
-import { useState } from "react";
+import { Table, Tag } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const TableComponent = ({ URLData, handleRefresh }) => {
   // record passes the specific object
@@ -38,6 +38,20 @@ const TableComponent = ({ URLData, handleRefresh }) => {
     //   });
   };
 
+  const handleSave = (shortURL) => {
+    alert("https://www.snipsnip.com" + shortURL);
+  };
+
+  const handleDelete = (record) => {
+    const id = record._id;
+    fetch(`http://localhost:3001/delete/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      console.log("Delete");
+      handleRefresh();
+    });
+  };
+
   const columns = [
     {
       title: "Short URL",
@@ -58,6 +72,20 @@ const TableComponent = ({ URLData, handleRefresh }) => {
     {
       title: "Click",
       dataIndex: "click",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (text, record) => (
+        <div>
+          <Tag color="geekblue" onClick={() => handleSave(record.shortURL)}>
+            <EditOutlined /> Edit
+          </Tag>
+          <Tag color="magenta" onClick={() => handleDelete(record)}>
+            <DeleteOutlined /> Delete
+          </Tag>
+        </div>
+      ),
     },
   ];
   return (

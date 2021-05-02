@@ -89,4 +89,20 @@ urlControllerRouter.post("/update/:id", (req, res) => {
     });
 });
 
+urlControllerRouter.delete(`/delete/:id`, (req, res) => {
+  try {
+    const id = req.params.id;
+    UrlModel.findByIdAndDelete(id).exec();
+    console.log(`[DELETE] ${id}`);
+    res.status(500).json({
+      message: err.message,
+    });
+  } catch (err) {
+    console.log(`[UPDATE] ${err}`);
+    res.status(200).json({
+      message: err.message,
+    });
+  }
+});
+
 module.exports = urlControllerRouter;
