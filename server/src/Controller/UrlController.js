@@ -88,6 +88,34 @@ urlControllerRouter.post("/update/:id", (req, res) => {
       });
     });
 });
+urlControllerRouter.post(`/updateShortURL/:id`, (req, res) => {
+  const id = req.params.id;
+
+  UrlModel.findById(id)
+    .then((updateURL) => {
+      updateURL.shortURL = `/${req.body.shortURL}`;
+      updateURL
+        .save()
+        .then(() => {
+          console.log(`[UPDATE] ${updateURL}`);
+          res.status(200).json({
+            message: updateURL,
+          });
+        })
+        .catch((err) => {
+          console.log(`[UPDATE] ${err}`);
+          res.status(500).json({
+            message: err.message,
+          });
+        });
+    })
+    .catch((err) => {
+      console.log(`[UPDATE] ${err}`);
+      res.status(200).json({
+        message: err.message,
+      });
+    });
+});
 
 urlControllerRouter.delete(`/delete/:id`, (req, res) => {
   try {

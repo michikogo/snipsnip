@@ -1,4 +1,5 @@
-import { Table, Tag } from "antd";
+import { useState } from "react";
+import { Table, Tag, Modal, Input, Row, Col, Form } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const TableComponent = ({ URLData, handleRefresh }) => {
@@ -38,8 +39,42 @@ const TableComponent = ({ URLData, handleRefresh }) => {
     //   });
   };
 
-  const handleSave = (shortURL) => {
-    alert("https://www.snipsnip.com" + shortURL);
+  const [showModal, setShowModal] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [newShortURL, setNewShortURL] = useState(null);
+
+  const handleNew = (record) => {
+    if (newShortURL === null) {
+      setShowError(true);
+    } else {
+      const updateData = {
+        shortURL: newShortURL,
+      };
+      console.log(updateData);
+
+      const id = record._id;
+      fetch(`http://localhost:3001/updateShortURL/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      })
+        .then((res) => {
+          console.log(`Update`);
+          console.log(res.json());
+          handleRefresh();
+          setNewShortURL(null);
+          setShowError(false);
+          setShowModal(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handleCancel = () => {
+    setShowError(false);
+    setShowModal(false);
   };
 
   const handleDelete = (record) => {
@@ -78,9 +113,47 @@ const TableComponent = ({ URLData, handleRefresh }) => {
       dataIndex: "action",
       render: (text, record) => (
         <div>
-          <Tag color="geekblue" onClick={() => handleSave(record.shortURL)}>
+          <Tag color="geekblue" onClick={() => setShowModal(true)}>
             <EditOutlined /> Edit
           </Tag>
+          <Modal
+            title="Basic Modal"
+            visible={showModal}
+            onOk={() => handleNew(record)}
+            onCancel={() => handleCancel()}
+          >
+            <Form>
+              <Form.Item label="Current Short URL Name">
+                <Input
+                  placeholder={`https://www.snipsnip.com${record.shortURL}`}
+                  disabled
+                />
+              </Form.Item>
+              {!showError && (
+                <Form.Item label="New Short URL Name">
+                  <Input
+                    addonBefore="https://www.snipsnip.com/"
+                    value={newShortURL}
+                    onChange={(e) => setNewShortURL(e.target.value)}
+                  />
+                </Form.Item>
+              )}
+              {showError && (
+                <Form.Item
+                  label="New Short URL Name"
+                  hasFeedback
+                  validateStatus="error"
+                  help="Place a new URL name"
+                >
+                  <Input
+                    addonBefore="https://www.snipsnip.com/"
+                    value={newShortURL}
+                    onChange={(e) => setNewShortURL(e.target.value)}
+                  />
+                </Form.Item>
+              )}
+            </Form>
+          </Modal>
           <Tag color="magenta" onClick={() => handleDelete(record)}>
             <DeleteOutlined /> Delete
           </Tag>
